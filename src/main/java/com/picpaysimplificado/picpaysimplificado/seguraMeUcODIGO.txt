@@ -1,0 +1,50 @@
+  public void publishMessageEmail(Users sender, Users receiver, BigDecimal transactionValue){
+
+
+
+
+        var emailDto = new EmailDto();
+        emailDto.setUserId(UUID.randomUUID());
+        emailDto.setEmailTo(sender.getEmail());
+        emailDto.setSubject("Olá "+sender.getFirstName()+", você enviou R$"+transactionValue+" com successo!");
+        emailDto.setText("Olá "+sender.getFirstName()+", você enviou R$"+transactionValue+" para "+receiver.getFirstName()+" com sucesso!");
+
+
+
+        HTMLSettings settings = new HTMLSettings(
+                "https://img.freepik.com/free-vector/geometric-abstract-green-background_23-2148380710.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1699833600&semt=ais",
+                "https://content-assets.unum.com.br/wp-content/2020/04/ppay-icon.png",
+                "#FFF",
+                "#FFF",
+                emailDto.getSubject(),
+                emailDto.getText() +" "+ formatDateTime(LocalDateTime.now()),
+                "<button style='border-radius:20px;border:none;background:#fff;color:black;width:30%;padding:10px;margin:auto;'>Ver no App</button>"
+        );
+
+
+
+        MessageWrapper messageWrapper = new MessageWrapper();
+        messageWrapper.setEmailDto(emailDto);
+        messageWrapper.setHtmlSettings(settings);
+
+
+
+        rabbitTemplate.convertAndSend("", routingKey, messageWrapper);
+
+
+
+
+
+
+
+        var emailDto2 = new EmailDto();
+        emailDto2.setUserId(UUID.randomUUID());
+        emailDto2.setEmailTo(receiver.getEmail());
+        emailDto2.setSubject("Olá "+receiver.getFirstName()+", você Recebeu R$"+transactionValue+" com successo!");
+        emailDto2.setText("Olá "+receiver.getFirstName()+", você Recebeu R$"+transactionValue+" de "+sender.getFirstName()+" com sucesso!");
+        rabbitTemplate.convertAndSend("", routingKey, emailDto2);
+
+
+
+
+    }
