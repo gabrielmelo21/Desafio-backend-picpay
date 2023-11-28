@@ -1,2 +1,1 @@
-# DesafioPicPay
-Desafio PicPay - Picpay simplificado - https://github.com/PicPay/picpay-desafio-backend
+Desafio PicPay - Picpay simplificado - https://github.com/PicPay/picpay-desafio-backend + sistema de envio de email personalizado com HTML usando meu Microservice de envio de emails conectado com RabbitMQ
